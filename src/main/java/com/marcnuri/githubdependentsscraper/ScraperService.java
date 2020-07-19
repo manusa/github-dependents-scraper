@@ -22,10 +22,13 @@ public class ScraperService {
   private static final String REFERRER = "http://www.google.com";
 
   void scrape(String url) throws IOException, InterruptedException {
-    final Document startPage = fetchPage(url);
+    Page page = processPage(fetchPage(url));
+    if (page.getDependents().isEmpty()) {
+      System.out.println("No dependents found, if this is unexpected verify that the provided URL is valid.");
+      return;
+    }
     System.out.print("[");
     boolean isNotFirst = false;
-    Page page = processPage(startPage);
     while(true) {
       for(Dependent dependent : page.getDependents()) {
         if (isNotFirst) {

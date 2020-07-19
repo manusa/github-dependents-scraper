@@ -6,7 +6,10 @@ package com.marcnuri.githubdependentsscraper;
 import javax.inject.Inject;
 import picocli.CommandLine;
 
-@CommandLine.Command
+import java.net.MalformedURLException;
+import java.net.URL;
+
+@CommandLine.Command(name = "github-dependents")
 public class Application implements Runnable {
 
   private final ScraperService scraperService;
@@ -23,7 +26,11 @@ public class Application implements Runnable {
   @Override
   public void run() {
     try {
+      new URL(dependentsUrl);
       scraperService.scrape(dependentsUrl);
+    } catch(MalformedURLException ex) {
+      System.err.printf("URL %s is invalid, please provide a valid URL.%n", dependentsUrl);
+      CommandLine.usage(this, System.out);
     } catch (Exception e) {
       System.err.println(e.getMessage());
       e.printStackTrace();
