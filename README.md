@@ -30,11 +30,12 @@ $ "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\B
 
 ### JVM
 ```shell script
-$ java -jar  target/github-dependents-scraper-1.0-SNAPSHOT-runner.jar "https://github.com/fabric8io/fabric8-maven-plugin/network/dependents?package_id=UGFja2FnZS0xODEwNTMzNjE%3D"
+$ java -jar  target/github-dependents-scraper-uber.jar "https://github.com/fabric8io/fabric8-maven-plugin/network/dependents?package_id=UGFja2FnZS0xODEwNTMzNjE%3D"
 ```
 
 ### Native
-- Build native executable
+Once the native binary is built following your platform instructions, run the following command:
+
 ```shell script
-$ ./target/github-dependents-scraper-1.0-SNAPSHOT-runner "https://github.com/fabric8io/fabric8-maven-plugin/network/dependents?package_id=UGFja2FnZS0xODEwNTMzNjE%3D"
+$ ./target/github-dependents-scraper-uber "https://github.com/fabric8io/fabric8-maven-plugin/network/dependents?package_id=UGFja2FnZS0xODEwNTMzNjE%3D"
 ```
