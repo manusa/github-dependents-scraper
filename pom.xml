@@ -17,6 +17,9 @@
     <version.quarkus>1.6.0.Final</version.quarkus>
     <version.jsoup>1.13.1</version.jsoup>
     <quarkus.banner.enabled>false</quarkus.banner.enabled>
+    <quarkus.package.runner-suffix>-uber</quarkus.package.runner-suffix>
+    <quarkus.package.output-name>${project.artifactId}</quarkus.package.output-name>
+    <dockerBuild>false</dockerBuild>
   </properties>
 
   <dependencies>
@@ -90,6 +93,7 @@
                   <goal>native-image</goal>
                 </goals>
                 <configuration>
+                  <dockerBuild>${dockerBuild}</dockerBuild>
                   <additionalBuildArgs>
                     <additionalBuildArg>-H:EnableURLProtocols=https</additionalBuildArg>
                     <additionalBuildArg>-H:EnableURLProtocols=http</additionalBuildArg>
