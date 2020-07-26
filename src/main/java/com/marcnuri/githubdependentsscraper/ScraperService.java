@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Singleton
 public class ScraperService {
 
+  private static final long TOO_MANY_REQUESTS_PAUSE_MILLIS = 30000L;
+  private static final int HTTP_STATUS_TOO_MANY_REQUEST = 429;
   private static final String USER_AGENT = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
   private static final String REFERRER = "http://www.google.com";
 
@@ -56,8 +58,8 @@ public class ScraperService {
     try {
        ret = Jsoup.connect(url).userAgent(USER_AGENT).referrer(REFERRER).get();
     } catch(HttpStatusException exception) {
-      if (exception.getStatusCode() == 429) {
-        Thread.sleep(30000);
+      if (exception.getStatusCode() == HTTP_STATUS_TOO_MANY_REQUEST) {
+        Thread.sleep(TOO_MANY_REQUESTS_PAUSE_MILLIS);
         ret = Jsoup.connect(url).userAgent(USER_AGENT).referrer(REFERRER).get();
       } else {
         throw exception;
@@ -66,10 +68,7 @@ public class ScraperService {
     return ret;
   }
 
-  private Page processPage(Document page) throws IOException {
-    if (isAbuse(page)) {
-      throw new ScraperException("GitHub abuse detected");
-    }
+  private Page processPage(Document page) {
     final List<Dependent> dependents = page.select("#dependents .Box-Row").stream()
       .map(ScraperService::extractDependent)
       .filter(Objects::nonNull)
@@ -100,7 +99,4 @@ public class ScraperService {
     return null;
   }
 
-  private static boolean isAbuse(Document page) {
-    return page.text().contains("abuse detection");
-  }
 }
